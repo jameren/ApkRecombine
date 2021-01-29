@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">loginlibrary</string>
+    <string name="login_user_name_hint">请输入用户名</string>
+    <string name="login_user_pass_hint">请输入密码</string>
+    <string name="login_button">登录</string>
+</resources>

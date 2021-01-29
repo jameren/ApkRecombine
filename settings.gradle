@@ -1,0 +1,6 @@
+include ':loginlibrary'
+include ':lib'
+include ':homelibrary'
+include ':test_middleware'
+include ':app'
+rootProject.name = "PackageTest"

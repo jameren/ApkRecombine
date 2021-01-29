@@ -1,0 +1,21 @@
+plugins {
+    id 'java-library'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
+}
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+dependencies {
+    implementation 'org.reflections:reflections:0.9.11'
+    //implementation files('libs\\apktool2.2.6.jar')//反编译回编译工具
+    implementation files('libs\\dx.jar')//jar转dex
+    //implementation files('libs\\d8.jar')
+    //implementation files('libs\\baksmali-2.4.0.jar')
+    implementation files('libs\\apksigner.jar')
+    implementation files('libs\\apktool_2.5.0.jar')
+    implementation files('libs\\dom4j-1.6.1.jar')
+}
