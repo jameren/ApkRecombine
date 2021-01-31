@@ -18,10 +18,10 @@ import java.util.List;
 /**
  * 解析apk后需要合并资源的操作
  * */
-public class ResourcesMerge {
+public class ResourcesMerge implements ApkMerge{
 
-    private File muDir;
-    private List<File> fatherDir;
+    protected File muDir;
+    protected List<File> fatherDir;
 
     public class ApkResNotExistsException extends Exception{
         public ApkResNotExistsException(String s) {
@@ -40,38 +40,48 @@ public class ResourcesMerge {
         this.muDir = muDir;
         this.fatherDir = fatherDir;
     }
-
-    public void merge(){
+    private int smaliCount;//母包smali文件夹数量
+    public void merge() throws Exception {
+        //开始合并资源前先遍历母包中有多少smali文件夹
+        for (File mu:muDir.listFiles()){
+            if (mu.isDirectory() && mu.getName().startsWith("smali")){
+                smaliCount++;
+            }
+        }
         for (File father:fatherDir){
-            merge(muDir,father);
+            merge(true,muDir,father);
         }
     }
 
     //资源合并
-    private void merge(File moFile,File faFile){
-        String[] listFileNames = faFile.list();
-        for (String fileName:listFileNames){
+    private void merge(boolean isRoot,File moFile,File faFile){
+        File[] listFileNames = faFile.listFiles();
+        for (File fFile:listFileNames){
             // System.out.println(count+++" "+faFile.getAbsolutePath()+"  -->  "+fileName);
-            File mFile = new File(moFile.getAbsolutePath(),fileName);
-            if (fileName.equals("original")){
+            File mFile = new File(moFile.getAbsolutePath(),fFile.getName());
+            if (fFile.getName().equals("original")){
                 continue;
             }
             if (mFile.exists() && mFile.isFile()){
-                if (fileName.equals("AndroidManifest.xml")){
+                if (fFile.getName().equals("AndroidManifest.xml")){
                     //合并清单文件
                     try {
-                        mergeAndroidManifestXml(mFile,new File(faFile.getAbsolutePath(), fileName));
+                        mergeAndroidManifestXml(mFile,new File(faFile.getAbsolutePath(), fFile.getName()));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else if (fileName.endsWith(".xml")){
-                    //合并其他 xml 文件
+                }else if (fFile.getName().endsWith(".xml")){
+                    //todo 合并其他 xml 文件
 
                 }
                 continue;//其他已存在的文件以母包为主，不进行覆盖
             }
 
-            File fFile = new File(faFile.getAbsolutePath(), fileName);
+            if(fFile.getName().startsWith("smali") && isRoot){
+                //如果是smali文件夹,考虑到方法数可能会超过65535,递增新建smali文件夹让apktool单独压缩到新的dex文件中
+                 mFile = new File(moFile.getAbsolutePath(), "smali_classes"+(++smaliCount));
+            }
+
             if (!mFile.exists()) {
                 if (fFile.isDirectory()){
                     mFile.mkdirs();//创建不存在的目录层（存在多级时同时创建）
@@ -80,9 +90,9 @@ public class ResourcesMerge {
 
             if (mFile.isDirectory()) {
                 //文件夹继续递归进入下一层目录合并
-                merge(mFile,fFile);
+                merge(false,mFile,fFile);
             }else{
-                System.out.println("----copy ---> "+fFile.getAbsolutePath());
+                System.out.println("级别目录----copy ---> "+fFile.getAbsolutePath());
                 //母包中不存在的文件，直接从模块包中copy补全
                 copy(mFile, fFile);
             }
@@ -90,7 +100,7 @@ public class ResourcesMerge {
     }
 
     //copy文件
-    private void copy(File outFile, File inFile) {
+    protected void copy(File outFile, File inFile) {
         BufferedOutputStream out = null;
         BufferedInputStream in = null;
         try {
@@ -128,7 +138,7 @@ public class ResourcesMerge {
      * @param fFile 模块包清单文件
      * 因其文件特殊性，对于配置的节点合并策略单独做处理
      * */
-    private void mergeAndroidManifestXml(File mFile, File fFile) throws Exception{
+    protected void mergeAndroidManifestXml(File mFile, File fFile) throws Exception{
         SAXReader saxReader = new SAXReader();
         Document mDocument = saxReader.read(mFile);//解析母包AndroidManifest.xml
         Document fDocument = saxReader.read(fFile);//解析模块包AndroidManifest.xml

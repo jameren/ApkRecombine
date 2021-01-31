@@ -10,7 +10,7 @@ import com.ren.middleware.moudle.LoginPage;
 public class LoginPageImpl implements LoginPage {
     @Override
     public void startLoginPage(Context context) {
-       // context.startActivity(new Intent(context, LoginActivity.class));
+        context.startActivity(new Intent(context, LoginActivity.class));
         //ARouter.getInstance().build(Module.LOGIN).navigation();
     }
 }

@@ -17,12 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //startActivity(new Intent(this,LoginActivity.class));
-        ModuleConfig.getInstance().init(this);
-        try {
-            ModuleConfig.getInstance().getLoginPage().startLoginPage(this);
-        } catch (ModuleConfig.NotFondImplException e) {
-            Toast.makeText(getApplication(),e.getMessage(),Toast.LENGTH_SHORT).show();
-        }
+        ARouter.getInstance().build(Module.LOGIN).navigation();
         finish();
     }
 }

@@ -9,8 +9,8 @@ public class TestApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ARouter.init(this); // As early as possible, it is recommended to initialize in the Application
         ARouter.openLog();     // Print log
         ARouter.openDebug();
-        ARouter.init(this); // As early as possible, it is recommended to initialize in the Application
     }
 }

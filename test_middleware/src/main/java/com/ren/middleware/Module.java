@@ -1,6 +1,6 @@
 package com.ren.middleware;
 
 public interface Module {
-    String HOME="/test/activity/home";
-    String LOGIN="/test/activity/login";
+    String HOME="/home/h";
+    String LOGIN="/login/l";
 }

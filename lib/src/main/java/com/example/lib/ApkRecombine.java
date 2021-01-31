@@ -41,7 +41,7 @@ public class ApkRecombine {
         }
 
         //2:合并资源
-        ResourcesMerge resourcesMerge = new ResourcesMerge(muDir, fatherFiles);
+        ResourcesMerge resourcesMerge = new NewResourcesMersge(muDir, fatherFiles);
         resourcesMerge.merge();
 
         //3:将合并后的资源回编译成apk

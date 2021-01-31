@@ -18,22 +18,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ModuleConfig.getInstance().init(getApplication());
+        //ModuleConfig.getInstance().init(getApplication());
     }
 
     public void startLogin(View view) {
-        try {
-            ARouter.getInstance().build(Module.LOGIN).navigation();
-        }catch (Exception e){
-            Toast.makeText(getApplication(),"ARouter --> "+e.getMessage(),Toast.LENGTH_SHORT).show();
-        }
+       ARouter.getInstance().build(Module.LOGIN).navigation();
     }
 
     public void startHome(View view) {
-        try {
+       /* try {
             ModuleConfig.getInstance().getHomePage().startHomePage(this);
         } catch (ModuleConfig.NotFondImplException e) {
             Toast.makeText(getApplication(),e.getMessage(),Toast.LENGTH_SHORT).show();
-        }
+        }*/
+     ARouter.getInstance().build(Module.HOME).navigation();
+
     }
 }

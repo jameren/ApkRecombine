@@ -22,7 +22,7 @@ android {
         }
     }
 
-    buildTypes {
+   /* buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -51,7 +51,7 @@ android {
             v1SigningEnabled true
             v2SigningEnabled true
         }
-    }
+    }*/
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -69,6 +69,7 @@ dependencies {
     implementation project(path: ':test_middleware')
     implementation 'com.alibaba:arouter-api:1.5.0'
     annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
+
     if (isModule.toBoolean()){
     }else{
         implementation project(path: ':homelibrary')

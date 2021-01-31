@@ -29,12 +29,11 @@ import brut.common.BrutException;
 
 public class MyClass {
     public static void main(String[] args) {
-        String dir = "H:/zshy/test";//打包目录空间
-        String moApkName = "app-debug.apk";//母包apk名称
-        String faApkName = "homelibrary-debug.apk";//module apk名称
+        long startTime = System.currentTimeMillis();
+        String dir = "J:\\zshy\\test";//打包目录空间
         try {
             //1：将母包与模块包进行解析合并重组打包
-            ApkRecombine apkRecombine = new ApkRecombine(dir + "/" + moApkName);
+            ApkRecombine apkRecombine = new ApkRecombine(dir + "/app-debug.apk");
             ArrayList<String> modules = new ArrayList<>();
             modules.add(dir + "/homelibrary-debug.apk");
             modules.add(dir + "/loginlibrary-debug.apk");
@@ -50,6 +49,8 @@ public class MyClass {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        long endTime = System.currentTimeMillis();
+        System.out.println(" ---->  "+(endTime-startTime));
     }
 
     private static void decodeApk(String apkName,String outPutDir) {
