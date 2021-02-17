@@ -9,6 +9,7 @@ import com.ren.middleware.moudle.LoginPage;
 public class ModuleConfig implements Module{
     private HomePage homePage;
     private LoginPage loginPage;
+    private Context context;
 
     private ModuleConfig() {
     }
@@ -22,10 +23,15 @@ public class ModuleConfig implements Module{
             return moduleConfig;
     }
     public synchronized void init(Context context){
+        this.context = context;
+        scanClass(context);
+    }
+
+    private void scanClass(Context context) {
         //扫描Home页面实现
-        homePage = ClassesReader.scanFirstSon(context,"com.home", HomePage.class);
+        homePage = ClassesReader.scanFirstSon(context, HomePage.class);
         //扫描Login页面实现
-        loginPage = ClassesReader.scanFirstSon(context,"com.ren.loginlibrary", LoginPage.class);
+        loginPage = ClassesReader.scanFirstSon(context,LoginPage.class);
         if (homePage!=null) {
             Log.d("类扫描", homePage.toString());
         }
@@ -41,12 +47,14 @@ public class ModuleConfig implements Module{
         }
     }
     public HomePage getHomePage() throws NotFondImplException{
+       // scanClass(context);
         if (homePage == null){
             throw new NotFondImplException();
         }
         return homePage;
     }
     public LoginPage getLoginPage() throws NotFondImplException{
+        //scanClass(context);
         if (loginPage == null){
             throw new NotFondImplException();
         }

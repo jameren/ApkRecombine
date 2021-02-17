@@ -13,7 +13,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/function" />
             <option value="$PROJECT_DIR$/homelibrary" />
+            <option value="$PROJECT_DIR$/kotlin_module" />
             <option value="$PROJECT_DIR$/lib" />
             <option value="$PROJECT_DIR$/loginlibrary" />
             <option value="$PROJECT_DIR$/test_middleware" />
@@ -23,6 +25,5 @@
         <option name="useQualifiedModuleNames" value="true" />
       </GradleProjectSettings>
     </option>
-    <option name="offlineMode" value="true" />
   </component>
 </project>

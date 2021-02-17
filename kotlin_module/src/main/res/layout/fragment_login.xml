@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="loginVm"
+            type="com.ren.kotlin_module.fragment.LoginViewModel" />
+        <variable
+            name="userInfo"
+            type="com.ren.kotlin_module.User.UserInfo" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_marginTop="150dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_userName"
+                android:paddingLeft="10dp"
+                android:hint="账号..."
+                android:text="@={loginVm.userName}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_marginTop="30dp"
+                android:paddingLeft="10dp"
+                android:hint="密码..."
+                android:text="@={loginVm.password}"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="50dp"
+                android:id="@+id/bt_Login"
+                android:text="登 录"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:background="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+            <LinearLayout
+                android:layout_marginTop="50dp"
+                android:orientation="vertical"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_gender"
+                    android:paddingLeft="10dp"
+                    android:hint="性别"
+                    android:text="@{userInfo.gender}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/et_age"
+                    android:paddingLeft="10dp"
+                    android:hint="年龄"
+                    android:text="@{userInfo.age.toString()}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

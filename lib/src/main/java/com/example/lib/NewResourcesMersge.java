@@ -7,8 +7,13 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -58,6 +63,7 @@ public class NewResourcesMersge extends ResourcesMerge {
         if (otherFile.isFile()){
             //文件
             if (!outFile.exists()) {
+                //不存在的文件直接copy
                 copy(outFile, otherFile);
             }else{
                 if (outFile.getName().endsWith(".xml")
@@ -116,17 +122,13 @@ public class NewResourcesMersge extends ResourcesMerge {
             muSmaliFile.mkdirs();//在母包目录中创建与module中对应的smali文件夹
         }
         //拷贝smali
-        copySmali(muSmaliFile, smaliFile);
+        copySmaliDir(muSmaliFile, smaliFile);
         muSmaliList.add(muSmaliFile);
     }
 
     //拷贝smali文件夹下的内容
-    private void copySmali(File muSmaliFile, File smaliFile) {
+    private void copySmaliDir(File muSmaliFile, File smaliFile) {
         File[] smaliRootFileList = smaliFile.listFiles();
-        if ("J:\\zshy\\test\\homelibrary-debug\\smali\\com\\home".equals(smaliFile.getAbsolutePath())){
-            System.out.println("---copySmali-- >  "+smaliFile.getAbsolutePath());
-        }
-        System.out.println("---copySmali-- >  "+smaliFile.getAbsolutePath());
         for (File smaliRootFile : smaliRootFileList) {
             File muFile = new File(muSmaliFile.getAbsolutePath(), smaliRootFile.getName());
             if (smaliRootFile.isDirectory()) {
@@ -134,18 +136,49 @@ public class NewResourcesMersge extends ResourcesMerge {
                     muFile.mkdirs();
                 }
                 //进入下级目录
-                copySmali(muFile, smaliRootFile);
+                copySmaliDir(muFile, smaliRootFile);
             } else {
                 //是文件,需要校验母包中其他smali文件夹下是否有重复的文件
-                if (!checkSmaliRepeat(smaliRootFile)){
-                    //执行文件拷贝
-                    System.out.println("-----copy ---> "+muFile.getAbsolutePath());
-                    copy(muFile,smaliRootFile);
+                String name = smaliRootFile.getName();
+                if (!name.startsWith("R$") && !name.equals("R.smali")) {
+                    if (!checkSmaliRepeat(smaliRootFile)) {
+                        //执行文件拷贝
+                        System.out.println("-----copy ---> " + muFile.getAbsolutePath());
+                        copy(muFile, smaliRootFile);
+                    }
                 }
             }
         }
     }
-
+    //copy .Smali文件.需要在读取过程中识别是否有资源id的应用,将其记录下来
+    protected void copySmali(File outFile, File inFile) {
+        BufferedWriter writer = null;
+        BufferedReader reader = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(outFile));
+            reader = new BufferedReader(new FileReader(inFile));
+            String line = null;
+            while ((line = reader.readLine()) != null){
+                writer.write(line);
+                //todo 识别是否存在资源id的引用
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (writer!=null) {
+                    writer.close();
+                }
+                if (reader != null){
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     //扫描是否有重复的smali文件
     private boolean checkSmaliRepeat(File fSmali) {
         System.out.println("----checkSmaliRepeat----");

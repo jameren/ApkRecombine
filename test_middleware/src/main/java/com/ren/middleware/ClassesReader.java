@@ -6,6 +6,7 @@ import android.content.Context;
 import java.io.File;
 
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -81,7 +82,7 @@ public final class ClassesReader {
         return reader(packageName, context.getPackageCodePath());
     }
 
-    public static <T> T scanFirstSon(Context context, String path, Class<T> tClass) {
+    public static <T> T scanFirstSon(Context context,Class<T> tClass) {
         T son = null;
         List<Class<T>> classes = new ArrayList<>();
         Set<DexFile> dexFiles = applicationDexFile(context.getPackageCodePath());
@@ -92,7 +93,7 @@ public final class ClassesReader {
             while (entries.hasMoreElements()) {
                 try {
                     String currentClassPath = entries.nextElement();
-                    if (currentClassPath == null || currentClassPath.isEmpty() || currentClassPath.indexOf(path) != 0) {
+                    if (currentClassPath == null || currentClassPath.isEmpty()) {
                         continue;
                     }
                     Class<?> entryClass = Class.forName(currentClassPath, true, classLoader);
@@ -100,7 +101,9 @@ public final class ClassesReader {
                         continue;
                     }
                     if (tClass.isAssignableFrom(entryClass)) {
-                        classes.add((Class<T>) entryClass);
+                        if (!entryClass.isInterface() && !Modifier.isAbstract(entryClass.getModifiers())) {
+                            classes.add((Class<T>) entryClass);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

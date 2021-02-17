@@ -30,16 +30,19 @@ import brut.common.BrutException;
 public class MyClass {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        String dir = "J:\\zshy\\test";//打包目录空间
+        String dir = "J:/zshy/test";//打包目录空间
         try {
             //1：将母包与模块包进行解析合并重组打包
             ApkRecombine apkRecombine = new ApkRecombine(dir + "/app-debug.apk");
             ArrayList<String> modules = new ArrayList<>();
+            modules.add(dir + "/kotlin_module-debug.apk");
             modules.add(dir + "/homelibrary-debug.apk");
             modules.add(dir + "/loginlibrary-debug.apk");
+            modules.add(dir + "/function-debug.apk");
             String unsignedApkPath = apkRecombine.startRecombine(modules);
+            //String unsignedApkPath = dir+"/app-debug_unsigned.apk";
             //2: 给apk签名
-            ApkSignTool.signApk(
+            ApkSignTool.signApkV1V2(
                     unsignedApkPath//需要签名的apk路径
                     ,dir+"/kirinlife.keystore"//keystore路径
                     ,"kirinlife"//别名
@@ -50,10 +53,10 @@ public class MyClass {
             e.printStackTrace();
         }
         long endTime = System.currentTimeMillis();
-        System.out.println(" ---->  "+(endTime-startTime));
+        System.out.println("   time ---->  "+(endTime-startTime));
     }
 
-    private static void decodeApk(String apkName,String outPutDir) {
+    /*private static void decodeApk(String apkName,String outPutDir) {
         ApkDecoder decoder = new ApkDecoder();
         try {
             decoder.setOutDir(new File("H:/zshy/app-debug"));
@@ -68,5 +71,5 @@ public class MyClass {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 }

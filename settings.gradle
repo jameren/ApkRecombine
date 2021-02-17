@@ -1,3 +1,5 @@
+include ':kotlin_module'
+include ':function'
 include ':loginlibrary'
 include ':lib'
 include ':homelibrary'

@@ -47,7 +47,19 @@ public class ApkRecombine {
         //3:将合并后的资源回编译成apk
         ApkOptions apkOptions = new ApkOptions();
         File unsignedApk = new File(muDir.getParent() + "/" + muDir.getName() + "_unsigned.apk");
+        apkOptions.useAapt2 = true;
         new Androlib(apkOptions).build(muDir,unsignedApk);
+
+        // brut.apktool.Main.main(new String[]{"apktool","b","--use-aapt2",muDir.getAbsolutePath(),"-o",unsignedApk.getAbsolutePath()});
+        //4:再次反编译已经合并重组的apk
+       /* String unsignedPath = unsignedApk.getAbsolutePath();
+        File unsignedDir = new File(unsignedPath.substring(0, unsignedPath.lastIndexOf(".apk")));
+        if (unsignedDir.exists()){
+            unsignedDir.delete();
+        }
+        brut.apktool.Main.main(new String[]{"apktool","d",unsignedPath,"-o",unsignedDir.getAbsolutePath()});*/
+        //读取aapt生成的id资源配置文件 public.xml.并合并代码.smali文件
+
 
         return unsignedApk.getAbsolutePath();//返回生成好的apk路径
     }

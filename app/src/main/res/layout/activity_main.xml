@@ -17,14 +17,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="startLogin"
-            android:text="跳转登录页 -->"
+            android:text="跳转登录 -->"
             android:layout_centerInParent="true"
             tools:ignore="MissingConstraints" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="startHome"
-            android:text="跳转至主页 -->"
+            android:text="跳转主页 -->"
+            android:layout_centerInParent="true"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startImpl"
+            android:text="调用功能 -->"
+            android:layout_centerInParent="true"
+            tools:ignore="MissingConstraints" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startOther"
+            android:text="其他实现 -->"
+            android:layout_centerInParent="true"
+            tools:ignore="MissingConstraints" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startKotlin"
+            android:text="kotlin+R.资源 -->"
             android:layout_centerInParent="true"
             tools:ignore="MissingConstraints" />
     </LinearLayout>
